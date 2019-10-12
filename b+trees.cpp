@@ -57,8 +57,22 @@ ll splitleaf(ll lnode)
 			tree[lnode].child.pop_back();
 	}
 	ll val=tree[rnode].val[0];
-	
-		
+	lp(i,0,tree[rnode].val.size()-1)
+	{
+		tree[rnode].val[i]=tree[rnode].val[i+1];
+		tree[rnode].child[i]=tree[rnode].child[i+1];
+	}
+	tree[rnode].val.pop_back();
+	tree[rnode].child.pop_back();
+	if(tree[lnode].parent==0)
+	{
+
+	}
+	else
+	{
+
+	}
+
 }
 
 ll insert(ll cnode,ll val)
