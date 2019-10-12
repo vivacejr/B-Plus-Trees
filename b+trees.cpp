@@ -29,15 +29,10 @@ struct bnode{
 };
 
 vector<bnode> tree;
-
-ll splitnode(ll cnode)
+ll rootnode;
+ll splitleaf(ll cnode)
 {
-
-}
-
-ll splitleaf(ll lnode)
-{
-	ll half = N/2;
+	ll half = (N+2)/2;
 	bnode tp;
 	ll rnode=tree.size();
 	tree.pb(tp);
@@ -47,14 +42,75 @@ ll splitleaf(ll lnode)
 	while(p1<N)
 	{
 		tree[rnode].val.pb(tree[lnode].val[p1]);
-		tree[rnode].child.pb(tree[lnode].child[p1]);
 	}
 	p1=half,p2=0;
 	while(p1<N)
 	{
 		tree[lnode].val.pop_back();
+		tree[lnode].child.pop_back();
+	}
+	ll val=tree[rnode].val[0];
+
+	if(tree[lnode].parent==0)
+	{
+		bnode tp;
+		ll pnode = tree.size();
+		tree.pb(tp);
+		tree[pnode].val.pb(val);
+		tree[pnode].child.pb(lnode);
+		tree[pnode].child.pb(rnode);
+		tree[lnode].parent=pnode;
+		tree[rnode].parent=pnode;
+		rootnode = pnode;
+		return 0;
+	}
+	else
+	{
+		ll cnode = tree[lnode].parent;
+		lp(i,0,tree[cnode].val.size())
+		{
+			if(val < tree[cnode].val[i])
+			{	
+				swap(tree[cnode].val[i], val);
+			}
+		}
+		tree[cnode].val.pb(val);
+		lp(i,0,tree[cnode].val.size())
+		{
+			if(tree[rnode].val[0] < tree[tree[cnode].child[i]].val[0])
+			{
+				swap(tree[rnode],tree[tree[cnode].child[i]]);
+			}
+		}
+		tree[cnode].child.pb(rnode);
+		lp(i,0,tree[cnode].child.size())
+		{
+			tree[tree[cnode].child[i]].parent=cnode;
+		}
+	}
+}
+
+ll splitnode(ll lnode)
+{
+	ll half = (N+1)/2;
+	bnode tp;
+	ll rnode=tree.size();
+	tree.pb(tp);
+	tree[rnode].parent=tree[lnode].parent;
+
+	ll p1=half,p2=0;
+	while(p1<=N)
+	{
+		tree[rnode].val.pb(tree[lnode].val[p1]);
+		tree[rnode].child.pb(tree[lnode].child[p1]);
+	}
+	p1=half,p2=0;
+	while(p1<=N)
+	{
+		tree[lnode].val.pop_back();
 		if(p1!=half)
 			tree[lnode].child.pop_back();
+		
 	}
 	ll val=tree[rnode].val[0];
 	lp(i,0,tree[rnode].val.size()-1)
@@ -75,16 +131,41 @@ ll splitleaf(ll lnode)
 	}
 	if(tree[lnode].parent==0)
 	{
-		Bnode tp;
-		ll pb = tree.size();
+		bnode tp;
+		ll pnode = tree.size();
 		tree.pb(tp);
-		tree[pb].val.pb(val);
+		tree[pnode].val.pb(val);
+		tree[pnode].child.pb(lnode);
+		tree[pnode].child.pb(rnode);
+		tree[lnode].parent=pnode;
+		tree[rnode].parent=pnode;
+		rootnode = pnode;
+		return 0;
 	}
 	else
 	{
-
+		ll cnode = tree[lnode].parent;
+		lp(i,0,tree[cnode].val.size())
+		{
+			if(val < tree[cnode].val[i])
+			{	
+				swap(tree[cnode].val[i], val);
+			}
+		}
+		tree[cnode].val.pb(val);
+		lp(i,0,tree[cnode].val.size())
+		{
+			if(tree[rnode].val[0] < tree[tree[cnode].child[i]].val[0])
+			{
+				swap(tree[rnode],tree[tree[cnode].child[i]]);
+			}
+		}
+		tree[cnode].child.pb(rnode);
+		lp(i,0,tree[cnode].child.size())
+		{
+			tree[tree[cnode].child[i]].parent=cnode;
+		}
 	}
-
 }
 
 ll insert(ll cnode,ll val)
@@ -124,6 +205,7 @@ int main()
 	ll n;
 	cin >> n;
 	ll ary[n];
+	rootnode = 0;
 	bnode root;  
 	tree.pb(root);
 	lp(i,0,n)
