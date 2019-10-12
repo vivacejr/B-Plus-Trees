@@ -64,9 +64,21 @@ ll splitleaf(ll lnode)
 	}
 	tree[rnode].val.pop_back();
 	tree[rnode].child.pop_back();
+
+	lp(i,0,tree[lnode].child.size())
+	{
+		tree[tree[lnode].child[i]].parent=lnode;
+	}
+	lp(i,0,tree[rnode].child.size())
+	{
+		tree[tree[rnode].child[i]].parent=rnode;
+	}
 	if(tree[lnode].parent==0)
 	{
-
+		Bnode tp;
+		ll pb = tree.size();
+		tree.pb(tp);
+		tree[pb].val.pb(val);
 	}
 	else
 	{
