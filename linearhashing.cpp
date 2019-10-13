@@ -180,6 +180,14 @@ struct Table
         return 0;
     }
 };
+inline ll parse(char query[])
+{
+    vector<string> vec;
+    string s;
+    istringstream iss(query);
+    while(getline(iss, s, ' ')) vec.pb(s);
+    return stoi(vec[0]);
+}
 
 
 
@@ -188,17 +196,34 @@ int main(int argc, const char *argv[])
 {
     ios_base::sync_with_stdio(false);cin.tie(NULL);
     Table ds = Table();
-    ll n;
-    cin >> n;
-    lp(i,0,n)
+    string file = argv[1];
+    ifstream in(file);
+    // cerr<<file<<endl;
+    if(!in)
     {
-        ll a;
-        cin >> a;
-        ll x = ds.add(a);
-        if(x)
-        {
-            cout<<a<<endl;
-        }
+        cout<<"F"<<endl;
+        return 0;
+    }
+    char query[255];
+    while(in)
+    {
+        ll ans=0;
+        in.getline(query, 255);
+        if(!in) break;
+        ll a =parse(query);
+        // ll n;
+        // cin >> n;
+        // lp(i,0,n)
+        // {
+            // ll a;
+            // cin >> a;
+            ll x = ds.add(a);
+            if(!x)
+            {
+                cout<<a<<endl;
+            }
+        // }
+
     }
     return 0;
 }

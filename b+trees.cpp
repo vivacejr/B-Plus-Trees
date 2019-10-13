@@ -346,10 +346,10 @@ ll main(ll argc, char ** argv)
 	{
 		ll ans=0;
 		in.getline(query, 255);
-		// cerr<<query<<endl;	
+
 		if(!in) break;
 		pair<ll, pair<ll,ll> > res = parse(query);
-		// cerr<<1<<endl;
+
 		if(res.first == 0) insert(rootnode, res.ss.ff);
 		else if(res.ff == 1)
 		{
