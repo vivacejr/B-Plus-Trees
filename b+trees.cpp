@@ -1,46 +1,46 @@
 #include<bits/stdc++.h>
 using namespace std;
-typedef long long int ll;
+// typedef long long int in;
 typedef long double ld;
 
-#define lp(var,start,end) for (ll var = start; var <end ; ++var)
-#define rlp(var,start,end) for(ll var = start; var>=end ; var--)
+#define lp(var,start,end) for (int var = start; var <end ; ++var)
+#define rlp(var,start,end) for(int var = start; var>=end ; var--)
 #define pb push_back
 #define mp make_pair
 #define pf push_front
 #define ff first
 #define ss second
-#define vll vector<ll>
+#define vint vector<int>
 #define vld vector<ld>
-#define pll pair<ll,ll> 
+#define pint pair<int,int> 
 #define pld pair<ld,ld> 
-#define vpll vector<pll>
+#define vpint vector<pint>
 #define vpld vector<pld>
-#define all(X) X.begin(),X.end()
+#define aint(X) X.begin(),X.end()
 #define endl "\n"
-#define sz(x) ((ll)((x).size()))
-const ll N=3,inf=1e18;
+#define sz(x) ((int)((x).size()))
+const int N=3,inf=1e9;
 
 struct bnode{
 	
-	ll parent;
-	vll val;
-	vector<ll> child;
-	ll right;
+	int parent;
+	vint val;
+	vector<int> child;
+	int right;
 };
 
 vector<bnode> tree;
-ll rootnode;
-ll splitleaf(ll lnode)
+int rootnode;
+int splitleaf(int lnode)
 {
-	ll half = 2;
+	int half = 2;
 	bnode tp;
-	ll rnode=tree.size();
+	int rnode=tree.size();
 	tree.pb(tp);
 
 	tree[rnode].parent=tree[lnode].parent;
 
-	ll p1=half,p2=0;
+	int p1=half,p2=0;
 	while(p1<=N)
 	{
 		// cout<<tree[lnode].val[p1]<<"yo"<<endl;
@@ -55,12 +55,12 @@ ll splitleaf(ll lnode)
 	}
 	tree[rnode].right=tree[lnode].right;
 	tree[lnode].right=rnode;
-	ll val=tree[rnode].val[0];
+	int val=tree[rnode].val[0];
 
 	if(tree[lnode].parent==-1)
 	{
 		bnode tp;
-		ll pnode = tree.size();
+		int pnode = tree.size();
 		tree.pb(tp);
 		tree[pnode].parent=-1;
 		tree[pnode].right=-1;
@@ -74,10 +74,8 @@ ll splitleaf(ll lnode)
 	}
 	else
 	{
-		// cout<<tree[lnode].val.size()<<endl;
-		// cout<<tree[rnode].val.size()<<endl;	
-		ll val1=val;
-		ll cnode = tree[lnode].parent;
+		int val1=val;
+		int cnode = tree[lnode].parent;
 		// cout<<cnode<<endl;
 		lp(i,0,tree[cnode].val.size())
 		{
@@ -107,15 +105,15 @@ ll splitleaf(ll lnode)
 	}
 }
 
-ll splitnode(ll lnode)
+int splitnode(int lnode)
 {
-	ll half = (N+1)/2;
+	int half = (N+1)/2;
 	bnode tp;
-	ll rnode=tree.size();
+	int rnode=tree.size();
 	tree.pb(tp);
 	tree[rnode].parent=tree[lnode].parent;
 
-	ll p1=half,p2=0;
+	int p1=half,p2=0;
 	while(p1<=N)
 	{
 		tree[rnode].val.pb(tree[lnode].val[p1]);
@@ -134,7 +132,7 @@ ll splitnode(ll lnode)
 		p2++;	
 	}
 	// cerr<<1<<endl;
-	ll val=tree[rnode].val[0];
+	int val=tree[rnode].val[0];
 	lp(i,0,tree[rnode].val.size())
 	{
 		if(tree[rnode].val.size()!=i)
@@ -157,7 +155,7 @@ ll splitnode(ll lnode)
 	if(tree[lnode].parent==-1)
 	{
 		bnode tp;
-		ll pnode = tree.size();
+		int pnode = tree.size();
 		tree.pb(tp);
 
 		tree[pnode].val.pb(val);
@@ -172,8 +170,8 @@ ll splitnode(ll lnode)
 	}
 	else
 	{
-		ll val1=val;
-		ll cnode = tree[lnode].parent;
+		int val1=val;
+		int cnode = tree[lnode].parent;
 		lp(i,0,tree[cnode].val.size())
 		{
 			if(val < tree[cnode].val[i])
@@ -197,7 +195,7 @@ ll splitnode(ll lnode)
 	}
 }
 
-ll insert(ll cnode,ll val)
+int insert(int cnode,int val)
 {
 	// if(tree[cnode].val.size()>0)
 		// cout<<cnode<<" "<<tree[cnode].val[0]<<" "<<tree[cnode].parent<<endl;
@@ -228,7 +226,7 @@ ll insert(ll cnode,ll val)
 	}
 }
 
-void find(ll cnode,ll val)
+void find(int cnode,int val)
 {
 	if(tree[cnode].child.size()==0)
 	{
@@ -253,15 +251,15 @@ void find(ll cnode,ll val)
 	}
 }
 
-ll cnt(ll cnode, ll x, ll y)
+int cnt(int cnode, int x, int y)
 {
-	ll val=x-1;
+	int val=x-1;
 	if(tree[cnode].child.size()==0)
 	{
-		ll c=0;
+		int c=0;
 		while(cnode!=-1)
 		{
-			ll f=0;
+			int f=0;
 			lp(i,0,tree[cnode].val.size())
 			{
 				if(tree[cnode].val[i]>y)
@@ -287,15 +285,15 @@ ll cnt(ll cnode, ll x, ll y)
 }
 
 
-ll print()
+int print()
 {
-	queue<pll> q;
+	queue<pint> q;
 	q.push(mp(rootnode,0));
-	ll cur=0;
+	int cur=0;
 	cout<<0<<endl;
 	while(!q.empty())
 	{
-		pll a = q.front();
+		pint a = q.front();
 		// cout<<a.ff<<endl;
 		q.pop();
 		if(a.ss>cur)
@@ -315,7 +313,7 @@ ll print()
 		}
 	}		
 }
-inline pair<ll, pair<ll,ll> > parse(char query[])
+inline pair<int, pair<int,int> > parse(char query[])
 {
 	vector<string> vec;
 	string s;
@@ -329,10 +327,14 @@ inline pair<ll, pair<ll,ll> > parse(char query[])
 int main(int argc, char ** argv)
 {
 	ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
-	
+	bnode tp;
+	tp.parent=-1;
+	tp.right=-1;
+	rootnode=0;
+	tree.pb(tp);
 	string file = argv[1];
 	ifstream in(file);
-
+	// cerr<<file<<endl;
 	if(!in)
 	{
 		cout<<"F"<<endl;
@@ -341,10 +343,12 @@ int main(int argc, char ** argv)
 	char query[255];
 	while(in)
 	{
-		ll ans=0;
+		int ans=0;
 		in.getline(query, 255);
+		// cerr<<query<<endl;	
 		if(!in) break;
-		pair<ll, pair<ll,ll> > res = parse(query);
+		pair<int, pair<int,int> > res = parse(query);
+		// cerr<<1<<endl;
 		if(res.first == 0) insert(rootnode, res.ss.ff);
 		else if(res.ff == 1)
 		{
